@@ -2,11 +2,11 @@
 
 #### Some notes on building Boxer
 
-The Boxer XCode project is designed to be a painless one-click build. Here's a quick rundown of how it's set up:
+The Boxer Xcode project is designed to be a painless one-click build. Here's a quick rundown of how it's set up:
 
 #### Build requirements
 
-To build the Boxer project you will need OS X 10.8 or higher and XCode 4.5 or higher.
+To build the Boxer project you will need OS X 10.8 or higher and Xcode 4.5 or higher.
 
 All necessary frameworks and other dependencies are included in the Boxer repo, so the project itself is all you'll need.
 
