@@ -10,7 +10,9 @@
 #import "BXBaseAppController.h"
 #import "BXSession.h"
 #import "BXJoystickController.h"
+#if defined(__x86_64__) || defined(__i386__)
 #import "BXJoypadController.h"
+#endif
 #import "ADBGeometry.h"
 #import "BXCursorFadeAnimation.h"
 #import "BXDOSWindowController.h"
@@ -127,7 +129,11 @@
 	if (session != previousSession)
 	{
 		BXJoystickController *joystickController    = [(BXBaseAppController *)[NSApp delegate] joystickController];
+#if defined(__x86_64__) || defined(__i386__)
         BXJoypadController *joypadController        = [(BXBaseAppController *)[NSApp delegate] joypadController];
+#else
+        BXJoypadController *joypadController        = nil;
+#endif
 		
 		if (previousSession)
 		{
@@ -143,7 +149,9 @@
 			[previousSession removeObserver: self forKeyPath: @"emulator.joystickSupport"];
 			
 			[joystickController removeObserver: self forKeyPath: @"joystickDevices"];
+#if defined(__x86_64__) || defined(__i386__)
 			[joypadController removeObserver: self forKeyPath: @"hasJoypadDevices"];
+#endif
 			
             CFNotificationCenterRef cfCenter = CFNotificationCenterGetDistributedCenter();
             CFNotificationCenterRemoveObserver(cfCenter, (__bridge const void *)(self), kTISNotifySelectedKeyboardInputSourceChanged, NULL);
@@ -196,10 +204,12 @@
 									options: NSKeyValueObservingOptionInitial
 									context: nil];
             
+#if defined(__x86_64__) || defined(__i386__)
 			[joypadController addObserver: self
                                forKeyPath: @"hasJoypadDevices"
                                   options: NSKeyValueObservingOptionInitial
                                   context: nil];
+#endif
 			
 			[session addObserver: self
 					  forKeyPath: @"emulator.joystick"

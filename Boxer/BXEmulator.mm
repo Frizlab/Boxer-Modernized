@@ -8,7 +8,7 @@
 #import "BXEmulatorPrivate.h"
 #import "NSObject+ADBPerformExtensions.h"
 
-#import <SDL/SDL.h>
+#import <SDL2/SDL.h>
 #import "cpu.h"
 #import "control.h"
 #import "shell.h"
@@ -926,7 +926,8 @@ static BOOL _hasStartedEmulator = NO;
 - (void) _startDOSBox
 {
 	//Initialize the SDL modules that DOSBox will need.
-	NSAssert1(!SDL_Init(SDL_INIT_AUDIO|SDL_INIT_TIMER|SDL_INIT_CDROM|SDL_INIT_NOPARACHUTE),
+	//Note: SDL_INIT_CDROM and SDL_INIT_NOPARACHUTE were removed in SDL2
+	NSAssert1(!SDL_Init(SDL_INIT_AUDIO|SDL_INIT_TIMER),
 			  @"SDL failed to initialize with the following error: %s", SDL_GetError());
 	
 	try

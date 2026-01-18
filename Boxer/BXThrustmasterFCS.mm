@@ -105,7 +105,7 @@ enum
                 break;
         }
         
-        [self setPosition: axisValue forGameportAxis: BXThrustmasterFCSHatAxis];
+        [self setPosition: axisValue forGameportAxis: (BXGameportAxis)BXThrustmasterFCSHatAxis];
     }
 }
 
@@ -113,7 +113,7 @@ enum
 {
     if (POVNumber == BXThrustmasterPrimaryPOV)
     {
-        float axisValue = [self positionForGameportAxis: BXThrustmasterFCSHatAxis];	// Value from -1.0 to 1.0
+        float axisValue = [self positionForGameportAxis: (BXGameportAxis)BXThrustmasterFCSHatAxis];	// Value from -1.0 to 1.0
         float threshold = axisValue + BXThrustmasterFCSPOVThreshold;		// Value from -0.75 to 1.25
         
         if (threshold > BXThrustmasterFCSPOVCentered)	return BXEmulatedPOVCentered;
@@ -146,7 +146,7 @@ enum
     return ([self directionForPOV: POVNumber] & direction) == direction;
 }
 
-- (float) rudderAxis                        { return [self positionForGameportAxis: BXThrustmasterFCSRudderAxis]; }
-- (void) setRudderAxis: (float)position		{ [self setPosition: position forGameportAxis: BXThrustmasterFCSRudderAxis]; }
+- (float) rudderAxis                        { return [self positionForGameportAxis: (BXGameportAxis)BXThrustmasterFCSRudderAxis]; }
+- (void) setRudderAxis: (float)position		{ [self setPosition: position forGameportAxis: (BXGameportAxis)BXThrustmasterFCSRudderAxis]; }
 
 @end

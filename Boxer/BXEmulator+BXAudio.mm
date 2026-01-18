@@ -13,7 +13,7 @@
 #import "BXAudioSource.h"
 #import "BXDrive.h"
 
-#import <SDL/SDL.h>
+#import <SDL2/SDL.h>
 #import "mixer.h"
 
 
@@ -175,21 +175,22 @@ NSString * const BXMIDIExternalDeviceNeedsMT32SysexDelaysKey = @"Needs MT-32 Sys
 
 - (void) _suspendAudio
 {
-    SDL_PauseAudio(YES);
-    
-    _cdromWasPlaying = (SDL_CDStatus(NULL) == CD_PLAYING);
-    if (_cdromWasPlaying)
-        SDL_CDPause(NULL);
+    // SDL2: Use SDL_PauseAudioDevice() instead of SDL_PauseAudio()
+    SDL_AudioDeviceID deviceID = boxer_getAudioDeviceID();
+    if (deviceID != 0) {
+        SDL_PauseAudioDevice(deviceID, 1);  // 1 = pause
+    }
     
     [self.activeMIDIDevice pause];
 }
 
 - (void) _resumeAudio
 {
-    SDL_PauseAudio(NO);
-    
-    if (_cdromWasPlaying)
-        SDL_CDResume(NULL);
+    // SDL2: Resume audio using device ID from DOSBox mixer
+    SDL_AudioDeviceID deviceID = boxer_getAudioDeviceID();
+    if (deviceID != 0) {
+        SDL_PauseAudioDevice(deviceID, 0);  // 0 = unpause
+    }
     
     [self.activeMIDIDevice resume];
 }

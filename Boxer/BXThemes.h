@@ -63,6 +63,8 @@
 - (NSShadow *) pushedImageInnerShadow;
 - (NSShadow *) pushedImageDropShadow;
 
+//The shadow to draw behind text. Defaults to nil.
+- (NSShadow *) textShadow;
 
 @end
 

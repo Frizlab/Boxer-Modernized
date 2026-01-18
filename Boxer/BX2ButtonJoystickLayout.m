@@ -9,6 +9,7 @@
 #import "BX2ButtonJoystickLayout.h"
 #import "BXEmulatedJoystick.h"
 
+#if defined(__x86_64__) || defined(__i386__)
 @implementation BX2ButtonJoystickLayout
 
 + (void) load
@@ -67,3 +68,9 @@
     return layout;
 }
 @end
+#else
+@implementation BX2ButtonJoystickLayout
++ (void) load { }
++ (id) layout { return nil; }
+@end
+#endif

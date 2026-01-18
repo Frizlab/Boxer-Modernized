@@ -9,6 +9,7 @@
 #import "BX4ButtonJoystickLayout.h"
 #import "BXEmulatedJoystick.h"
 
+#if defined(__x86_64__) || defined(__i386__)
 @implementation BX4ButtonJoystickLayout
 
 + (void) load
@@ -83,3 +84,9 @@
     return layout;
 }
 @end
+#else
+@implementation BX4ButtonJoystickLayout
++ (void) load { }
++ (id) layout { return nil; }
+@end
+#endif

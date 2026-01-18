@@ -10,6 +10,7 @@
 #import "ADBGeometry.h"
 #import "ADBForwardCompatibility.h"
 #import <QuartzCore/QuartzCore.h>
+#import <CoreImage/CoreImage.h>
 
 @implementation BXPrintStatusPanelController
 @synthesize numPages = _numPages;

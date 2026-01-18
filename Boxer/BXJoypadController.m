@@ -6,13 +6,17 @@
  */
 
 #import "BXJoypadController.h"
+#if defined(__x86_64__) || defined(__i386__)
 #import "JoypadSDK.h"
+#endif
 #import "BXJoypadController.h"
 #import "BXBaseAppController.h"
 #import "BXSession.h"
 #import "BXDOSWindowController.h"
 #import "BXInputController+BXJoypadInput.h"
+#if defined(__x86_64__) || defined(__i386__)
 #import "BX4ButtonJoystickLayout.h"
+#endif
 
 
 #pragma mark -
@@ -32,6 +36,7 @@
 #pragma mark -
 #pragma mark Initialization and deallocation
 
+#if defined(__x86_64__) || defined(__i386__)
 - (void) setCurrentLayout: (JoypadControllerLayout *)layout
 {
     if (currentLayout != layout)
@@ -161,4 +166,15 @@
     
     [device setDelegate: nil];
 }
+#else
+- (void) setCurrentLayout: (id)layout { }
+- (void) awakeFromNib { }
+- (void) dealloc { [super dealloc]; }
+- (NSArray *) joypadDevices { return @[]; }
+- (id) activeWindowController { return nil; }
+- (void) observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context { }
+- (BOOL) joypadManager: (id)manager deviceShouldConnect: (id)device { return NO; }
+- (void) joypadManager: (id)manager deviceDidConnect: (id)device player: (unsigned int)player { }
+- (void) joypadManager: (id)manager deviceDidDisconnect: (id)device player: (unsigned int)player { }
+#endif
 @end

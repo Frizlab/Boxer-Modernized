@@ -7,6 +7,9 @@
 
 #import "BXJoypadLayout.h"
 
+#if defined(__x86_64__) || defined(__i386__)
+#import "JoypadSDK.h"
+#endif
 
 static NSMutableDictionary *layoutClasses = nil;
 
@@ -27,6 +30,7 @@ static NSMutableDictionary *layoutClasses = nil;
     return [layoutClasses objectForKey: NSStringFromClass(joystickType)];
 }
 
+#if defined(__x86_64__) || defined(__i386__)
 + (JoypadControllerLayout *) layoutForJoystickType: (Class)joystickType
 {
     Class layoutClass = [self layoutClassForJoystickType: joystickType];
@@ -41,5 +45,16 @@ static NSMutableDictionary *layoutClasses = nil;
     //Override this in your subclass to construct buttons and so forth.
     return [[[JoypadControllerLayout alloc] init] autorelease];
 }
+#else
++ (id) layoutForJoystickType: (Class)joystickType
+{
+    return nil;
+}
+
++ (id) layout
+{
+    return nil;
+}
+#endif
 
 @end

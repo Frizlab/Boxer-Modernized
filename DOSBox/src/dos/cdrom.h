@@ -38,6 +38,56 @@
 #include "SDL_sound.h"
 #endif
 
+// SDL2: CD audio support was removed, so we need to create a stub SDL_CD structure
+#ifndef SDL_CD
+typedef struct {
+    int id;
+    int status;
+    int numtracks;
+    int cur_track;
+    Uint32 cur_frame;
+    struct {
+        Uint32 id;
+        Uint32 type;
+        Uint32 length;
+        Uint32 offset;
+    } track[100];
+    Uint32 reserved;
+} SDL_CD;
+#endif
+
+// SDL2: CD status constants (not in SDL2)
+#ifndef CD_TRAYEMPTY
+#define CD_TRAYEMPTY 0
+#define CD_STOPPED 1
+#define CD_PLAYING 2
+#define CD_PAUSED 3
+#define CD_ERROR 4
+#define FRAMES_TO_MSF(f, m, s, fr) do { \
+    *(m) = ((f) / 75) / 60; \
+    *(s) = ((f) / 75) % 60; \
+    *(fr) = (f) % 75; \
+} while(0)
+#endif
+
+// SDL2: Stub out all SDL CD functions (CD audio not supported in SDL2)
+#ifndef SDL_CDNumDrives
+#define SDL_CDNumDrives() 0
+#define SDL_CDName(x) NULL
+#define SDL_CDOpen(x) NULL
+#define SDL_CDClose(x) do {} while(0)
+#define SDL_CDStatus(x) NULL
+#define SDL_CDPlay(x, y, z) -1
+#define SDL_CDPause(x) -1
+#define SDL_CDResume(x) -1
+#define SDL_CDStop(x) -1
+#define SDL_CDEject(x) -1
+#define CD_INDRIVE(x) 0
+#define CD_PLAYING 0
+#define SDL_INIT_CDROM 0
+#define MSF_TO_FRAMES(m, s, f) ((m)*60*75 + (s)*75 + (f))
+#endif
+
 #define RAW_SECTOR_SIZE		2352
 #define COOKED_SECTOR_SIZE	2048
 

@@ -68,7 +68,7 @@
 	<key>JoypadURL</key>
 	<string>http://getjoypad.com/</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<string>10.15</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>© {{YEAR}} {{ORGANIZATION_NAME}}, all rights reserved.</string>
 	<key>NSMainNibFile</key>

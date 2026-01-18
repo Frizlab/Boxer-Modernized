@@ -177,11 +177,11 @@ enum {
 }
 
 
-- (float) throttleAxis  { return [self positionForGameportAxis: BXCHFlightstickProThrottleAxis]; }
-- (float) rudderAxis    { return [self positionForGameportAxis: BXCHFlightstickProRudderAxis]; }
+- (float) throttleAxis  { return [self positionForGameportAxis: (BXGameportAxis)BXCHFlightstickProThrottleAxis]; }
+- (float) rudderAxis    { return [self positionForGameportAxis: (BXGameportAxis)BXCHFlightstickProRudderAxis]; }
 
-- (void) setThrottleAxis: (float)position  { [self setPosition: position forGameportAxis: BXCHFlightstickProThrottleAxis]; }
-- (void) setRudderAxis: (float)position    { [self setPosition: position forGameportAxis: BXCHFlightstickProRudderAxis]; }
+- (void) setThrottleAxis: (float)position  { [self setPosition: position forGameportAxis: (BXGameportAxis)BXCHFlightstickProThrottleAxis]; }
+- (void) setRudderAxis: (float)position    { [self setPosition: position forGameportAxis: (BXGameportAxis)BXCHFlightstickProRudderAxis]; }
 
 
 - (void) setButton: (BXEmulatedJoystickButton)button toState: (BOOL)pressed

@@ -1130,13 +1130,14 @@ void MSCDEX_SetCDInterface(int intNr, int forceCD);
 	 
 	int SDLCDNum = -1;
 	
-	//Check that any audio CDs are actually present before enabling CD audio:
-	//this fixes Warcraft II's copy protection, which will fail if audio tracks
-	//are reported to be present but cannot be found.
-	if (useCDAudio && SDL_CDNumDrives() > 0)
+	// SDL2: CD audio support was removed, so we can't check for CD drives via SDL
+	// CD audio will be handled through DOSBox's CDROM interface instead
+	// For now, disable SDL CD audio support
+	if (useCDAudio)
 	{
-        //NOTE: SDL's CD audio API for OS X only ever exposes one CD, which will be #0.
-        SDLCDNum = 0;
+        // SDL2 doesn't support CD audio, so we'll use DOSBox's CDROM interface
+        // Set to -1 to indicate no SDL CD support
+        SDLCDNum = -1;
 	}
 	
 	//NOTE: ioctl is currently unimplemented for OS X in DOSBox 0.74, so this will always fall back to SDL.

@@ -15,7 +15,7 @@
 #import "BXAudioSource.h"
 
 #ifdef __cplusplus
-    #import "MT32Emu/mt32emu.h"
+    #import <MT32Emu/mt32emu/mt32emu.h>
 
 //MT32Emu has a C++ callback class for handling emulated synth notifications.
 //We implement a thin C++ wrapper that sends messages back to BXEmulatedMT32 for handling.

@@ -132,6 +132,8 @@
 - (NSShadow *) disabledImageDropShadow  { return self.imageDropShadow; }
 - (NSShadow *) disabledImageInnerShadow { return self.imageInnerShadow; }
 
+- (NSShadow *) textShadow { return nil; }
+
 @end
 
 

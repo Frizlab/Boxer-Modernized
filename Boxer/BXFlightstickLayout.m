@@ -9,6 +9,7 @@
 #import "BXFlightstickLayout.h"
 #import "BXEmulatedJoystick.h"
 
+#if defined(__x86_64__) || defined(__i386__)
 @implementation BXFlightstickLayout
 
 + (void) load
@@ -107,3 +108,9 @@
     return layout;
 }
 @end
+#else
+@implementation BXFlightstickLayout
++ (void) load { }
++ (id) layout { return nil; }
+@end
+#endif

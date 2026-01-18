@@ -6,6 +6,7 @@
  */
 
 #import "BXCoalface.h"
+#import <SDL2/SDL.h>
 
 typedef enum {
     BXLeftChannel,
@@ -26,3 +27,6 @@ float boxer_masterVolume(BXAudioChannel channel);
 
 //Defined in mixer.cpp. Update the volumes of all active channels.
 void boxer_updateVolumes();
+
+// SDL2: Get the audio device ID for pausing/resuming audio
+SDL_AudioDeviceID boxer_getAudioDeviceID();

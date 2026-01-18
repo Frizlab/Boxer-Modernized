@@ -153,7 +153,7 @@
 	<key>JoypadURL</key>
 	<string>http://getjoypad.com/</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<string>10.15</string>
 	<key>MobygamesSearchURL</key>
 	<string>http://www.mobygames.com/search/quick?p=2&amp;q=%@</string>
 	<key>MobygamesURL</key>

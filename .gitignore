@@ -13,3 +13,6 @@ build
 *.mode2v3
 xcuserdata
 project.xcworkspace
+# Backup directories (don't commit these)
+Frameworks/*.backup/
+Frameworks/*.framework.backup/

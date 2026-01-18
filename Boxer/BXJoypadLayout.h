@@ -5,7 +5,12 @@
  online at [http://www.gnu.org/licenses/gpl-2.0.txt].
  */
 
+#if defined(__x86_64__) || defined(__i386__)
 #import "JoypadSDK.h"
+#else
+#import <Foundation/Foundation.h>
+@class JoypadControllerLayout;
+#endif
 
 //BXJoypadLayot is a base class for our custom joypad controller layouts.
 //It mostly provides functions to register layouts for particular joystick types.
@@ -22,7 +27,11 @@ enum {
     BXJoyInputFakeDPadButtonLeft
 };
 
+#if defined(__x86_64__) || defined(__i386__)
 @interface BXJoypadLayout : JoypadControllerLayout
+#else
+@interface BXJoypadLayout : NSObject
+#endif
 
 //Register a Joypad controller layout as matching the specified joystick type.
 //Used by BXJoypadLayout subclasses to register themeselves.
@@ -34,6 +43,7 @@ enum {
 
 //Returns a fully prepared custom joystick controller layout for the specified
 //joystick type, suitable for passing to JoypadManager.
+#if defined(__x86_64__) || defined(__i386__)
 + (JoypadControllerLayout *) layoutForJoystickType: (Class)joystickType;
 
 //Returns an empty JoypadControllerLayout. Intended to be overridden by subclasses
@@ -41,5 +51,9 @@ enum {
 //NOTE: we must provide instances of JoypadControllerLayout because the Joypad SDK
 //does not support subclassing JoypadControllerLayout.
 + (JoypadControllerLayout *) layout;
+#else
++ (id) layoutForJoystickType: (Class)joystickType;
++ (id) layout;
+#endif
 
 @end

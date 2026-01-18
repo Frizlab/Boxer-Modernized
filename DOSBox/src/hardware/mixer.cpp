@@ -76,6 +76,7 @@ static struct {
 	bool nosound;
 	Bit32u freq;
 	Bit32u blocksize;
+	SDL_AudioDeviceID device;  // SDL2: Store audio device ID
 } mixer;
 
 Bit8u MixTemp[MIXER_BUFSIZE];
@@ -525,6 +526,11 @@ static void MIXER_CallBack(void * userdata, Uint8 *stream, int len) {
 }
 
 static void MIXER_Stop(Section* sec) {
+	// SDL2: Close the audio device
+	if (mixer.device != 0) {
+		SDL_CloseAudioDevice(mixer.device);
+		mixer.device = 0;
+	}
 }
 
 class MIXER : public Program {
@@ -654,23 +660,29 @@ void MIXER_Init(Section* sec) {
 	spec.samples=(Uint16)mixer.blocksize;
 
 	mixer.tick_remain=0;
+	mixer.device = 0;  // SDL2: Initialize device ID
 	if (mixer.nosound) {
 		LOG_MSG("MIXER:No Sound Mode Selected.");
 		mixer.tick_add=((mixer.freq) << MIXER_SHIFT)/1000;
 		TIMER_AddTickHandler(MIXER_Mix_NoSound);
-	} else if (SDL_OpenAudio(&spec, &obtained) <0 ) {
-		mixer.nosound = true;
-		LOG_MSG("MIXER:Can't open audio: %s , running in nosound mode.",SDL_GetError());
-		mixer.tick_add=((mixer.freq) << MIXER_SHIFT)/1000;
-		TIMER_AddTickHandler(MIXER_Mix_NoSound);
 	} else {
-		if((mixer.freq != (Bit32u)obtained.freq) || (mixer.blocksize != obtained.samples))
-			LOG_MSG("MIXER:Got different values from SDL: freq %d, blocksize %d",obtained.freq,obtained.samples);
-		mixer.freq=obtained.freq;
-		mixer.blocksize=obtained.samples;
-		mixer.tick_add=(mixer.freq << MIXER_SHIFT)/1000;
-		TIMER_AddTickHandler(MIXER_Mix);
-		SDL_PauseAudio(0);
+		// SDL2: Use SDL_OpenAudioDevice() instead of SDL_OpenAudio()
+		mixer.device = SDL_OpenAudioDevice(NULL, 0, &spec, &obtained, 0);
+		if (mixer.device == 0) {
+			mixer.nosound = true;
+			LOG_MSG("MIXER:Can't open audio: %s , running in nosound mode.",SDL_GetError());
+			mixer.tick_add=((mixer.freq) << MIXER_SHIFT)/1000;
+			TIMER_AddTickHandler(MIXER_Mix_NoSound);
+		} else {
+			if((mixer.freq != (Bit32u)obtained.freq) || (mixer.blocksize != obtained.samples))
+				LOG_MSG("MIXER:Got different values from SDL: freq %d, blocksize %d",obtained.freq,obtained.samples);
+			mixer.freq=obtained.freq;
+			mixer.blocksize=obtained.samples;
+			mixer.tick_add=(mixer.freq << MIXER_SHIFT)/1000;
+			TIMER_AddTickHandler(MIXER_Mix);
+			// SDL2: Use SDL_PauseAudioDevice() instead of SDL_PauseAudio()
+			SDL_PauseAudioDevice(mixer.device, 0);
+		}
 	}
 	mixer.min_needed=section->Get_int("prebuffer");
 	if (mixer.min_needed>100) mixer.min_needed=100;
@@ -690,5 +702,11 @@ void boxer_updateVolumes()
         source->UpdateVolume();
         source=source->next;
     }
+}
+
+// SDL2: Get the audio device ID for pausing/resuming audio
+SDL_AudioDeviceID boxer_getAudioDeviceID()
+{
+    return mixer.device;
 }
 //--End of modifications
